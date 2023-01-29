@@ -7,5 +7,7 @@ parserOptions:
   ecmaVersion: latest
   sourceType: module
 rules: {
-  "import/extensions": ['error', 'always', {ignorePackages: true} ]
+  "import/extensions": ['error', 'always', {ignorePackages: true} ],
+  "no-unused-vars": ["error", { "argsIgnorePattern": "next" }],
+  "implicit-arrow-linebreak": ["none"]
 }
