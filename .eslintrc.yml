@@ -9,5 +9,6 @@ parserOptions:
 rules: {
   "import/extensions": ['error', 'always', {ignorePackages: true} ],
   "no-unused-vars": ["error", { "argsIgnorePattern": "next" }],
-  "implicit-arrow-linebreak": ["none"]
+  "implicit-arrow-linebreak": "off",
+  "func-names": ["error", "never"]
 }
