@@ -12,7 +12,7 @@ config({ path: './config/config.env' });
 
 // Load models
 import Bootcamp from './models/Bootcamp.js';
-import Course from './models/Course.js'
+import Course from './models/Course.js';
 
 // Connect to DB
 mongoose.set('strictQuery', true);
