@@ -2,7 +2,7 @@ import jwt from 'jsonwebtoken';
 import ErrorResponse from '../utils/ErrorResponse.js';
 import User from '../models/User.js';
 
-const protect = async (req, res, next) => {
+export const protect = async (req, res, next) => {
   let token;
   const authHeader = req.headers.authorization;
 
@@ -26,4 +26,16 @@ const protect = async (req, res, next) => {
   }
 };
 
-export default protect;
+export const authorize =
+  (...roles) =>
+  (req, res, next) => {
+    if (!roles.includes(req.user.role)) {
+      return next(
+        new ErrorResponse(
+          `User role ${req.user.role} not authorized to access this route`,
+          403,
+        ),
+      );
+    }
+    return next();
+  };

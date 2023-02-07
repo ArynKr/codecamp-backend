@@ -135,7 +135,14 @@ export const bootcampPhotoUpload = asyncHandler(async (req, res, next) => {
 
   // check file size
   if (photo.size > process.env.FILE_UPLOAD_LIMIT) {
-    return next(new ErrorResponse(`Please upload an image less than ${process.env.FILE_UPLOAD_LIMIT / (1024 * 1024)} MegaBytes`, 400));
+    return next(
+      new ErrorResponse(
+        `Please upload an image less than ${
+          process.env.FILE_UPLOAD_LIMIT / (1024 * 1024)
+        } MegaBytes`,
+        400,
+      ),
+    );
   }
 
   // create a custom filename

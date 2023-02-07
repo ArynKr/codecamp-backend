@@ -3,9 +3,8 @@ import asyncHandler from '../middlewares/async.js';
 import User from '../models/User.js';
 
 /**
- * @desc        Utility fn toget token from model,
- *              create cookie and send response
-*/
+ * @desc        Utility fn toget token from model, create cookie and send response
+ */
 const sendTokenResponse = (user, statusCode, res) => {
   // create token
   const token = user.getSignedJwtToken();
@@ -29,7 +28,6 @@ const sendTokenResponse = (user, statusCode, res) => {
  * @route       POST /api/v1/auth/register
  * @access      Public
  */
-// eslint-disable-next-line import/prefer-default-export
 export const register = asyncHandler(async (req, res, next) => {
   // eslint-disable-next-line object-curly-newline
   const { name, email, password, role } = req.body;
@@ -82,3 +80,12 @@ export const login = asyncHandler(async (req, res, next) => {
 
   return sendTokenResponse(user, 200, res);
 });
+
+/**
+ * @desc        Register a user
+ * @route       POST /api/v1/auth/register
+ * @access      Public
+ */
+export const getMe = asyncHandler(async (req, res, next) =>
+  res.status(200).json({ success: true, user: req.user }),
+);
