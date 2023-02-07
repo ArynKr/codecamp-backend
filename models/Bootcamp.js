@@ -100,6 +100,12 @@ const BootcampSchema = new mongoose.Schema(
       type: Date,
       default: Date.now,
     },
+    // publisher of bootcamp
+    user: {
+      type: mongoose.Schema.ObjectId,
+      ref: 'User',
+      required: true,
+    },
   },
   {
     toJSON: { virtuals: true },
@@ -107,13 +113,13 @@ const BootcampSchema = new mongoose.Schema(
   },
 );
 
-// create bootcamp slug from the name before save
+/* create bootcamp slug from the name before save */
 BootcampSchema.pre('save', function (next) {
   this.slug = slugify(this.name, { lower: true });
   next();
 });
 
-// geocode and save location field
+/* geocode and save location field */
 BootcampSchema.pre('save', async function (next) {
   const loc = await geocoder.geocode(this.address);
   this.location = {
@@ -131,13 +137,13 @@ BootcampSchema.pre('save', async function (next) {
   next();
 });
 
-// Cascade: delete courses when a bootcamp is deleted
+/* Cascade: delete courses when a bootcamp is deleted */
 BootcampSchema.pre('remove', async function (next) {
   await this.model('Course').deleteMany({ bootcamp: this._id });
   next();
 });
 
-// Reverse populate with virtuals
+/* Reverse populate with virtuals */
 BootcampSchema.virtual('courses', {
   ref: 'Course',
   localField: '_id',
