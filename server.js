@@ -11,6 +11,7 @@ import errorHandler from './middlewares/error.js';
 import bootcamps from './routes/bootcamps.js';
 import courses from './routes/courses.js';
 import auth from './routes/auth.js';
+import users from './routes/users.js';
 
 /* load environment variables */
 config({ path: './config/config.env' });
@@ -20,6 +21,7 @@ connectDB();
 
 const app = express();
 const PORT = process.env.PORT || 5000;
+
 // eslint-disable-next-line no-underscore-dangle
 const __filename = fileURLToPath(import.meta.url);
 // eslint-disable-next-line no-underscore-dangle
@@ -47,6 +49,7 @@ app.get('/health-check', (_req, res) => res.status(200).send('Working'));
 app.use('/api/v1/bootcamps', bootcamps);
 app.use('/api/v1/courses', courses);
 app.use('/api/v1/auth', auth);
+app.use('/api/v1/users', users);
 
 /* middleware (error) */
 app.use(errorHandler);
