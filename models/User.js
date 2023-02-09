@@ -2,6 +2,7 @@
 import mongoose from 'mongoose';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
+import crypto from 'crypto';
 
 const UserSchema = new mongoose.Schema({
   name: {
@@ -49,6 +50,11 @@ const UserSchema = new mongoose.Schema({
 
 /* encrypt user password */
 UserSchema.pre('save', async function (next) {
+  // if password is not changed, then do not run this middleware
+  if (!this.isModified('password')) {
+    next();
+  }
+
   const salt = await bcrypt.genSalt(10);
   this.password = await bcrypt.hash(this.password, salt);
 });
@@ -63,6 +69,26 @@ UserSchema.methods.getSignedJwtToken = function () {
 /* match user entered password with encrypted db stored password */
 UserSchema.methods.matchPassword = async function (enteredPassword) {
   return bcrypt.compare(enteredPassword, this.password);
+};
+
+/* generate token and store the crypto hashed password token */
+UserSchema.methods.getResetPasswordToken = async function () {
+  // generate token
+  const resetToken = crypto.randomBytes(20).toString('hex');
+
+  // hash token and put it in the user's field in db
+  this.resetPasswordToken = crypto
+    .createHash('sha256')
+    .update(resetToken)
+    .digest('hex');
+
+  // set expire time
+  this.resetPasswordExpire = Date.now() + 10 * 60 * 1000;
+
+  // save the updated user
+  await this.save();
+
+  return resetToken;
 };
 
 export default mongoose.model('User', UserSchema);
