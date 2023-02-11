@@ -13,7 +13,7 @@ export const protect = async (req, res, next) => {
   }
 
   if (!token) {
-    return next(new ErrorResponse('Unauthorized to access this router', 404));
+    return next(new ErrorResponse('Unauthorized to access this route', 404));
   }
 
   try {
@@ -22,7 +22,7 @@ export const protect = async (req, res, next) => {
     req.user = await User.findById(decoded.id);
     return next();
   } catch (err) {
-    return next(new ErrorResponse('Unauthorized to access this router', 404));
+    return next(new ErrorResponse('Unauthorized to access this route', 404));
   }
 };
 

@@ -4,6 +4,7 @@ import {
   forgotPassword,
   getMe,
   login,
+  logout,
   register,
   resetPassword,
   updateDetails,
@@ -19,5 +20,6 @@ router.put('/updatedetails', protect, updateDetails);
 router.put('/updatepassword', protect, updatePassword);
 router.post('/forgotpassword', forgotPassword);
 router.put('/resetpassword/:resetToken', resetPassword);
+router.get('/logout', protect, logout);
 
 export default router;

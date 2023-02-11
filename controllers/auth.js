@@ -51,7 +51,6 @@ export const register = asyncHandler(async (req, res, next) => {
  * @route       POST /api/v1/auth/login
  * @access      Public
  */
-// eslint-disable-next-line import/prefer-default-export
 export const login = asyncHandler(async (req, res, next) => {
   // eslint-disable-next-line object-curly-newline
   const { email, password } = req.body;
@@ -82,6 +81,19 @@ export const login = asyncHandler(async (req, res, next) => {
   }
 
   return sendTokenResponse(user, 200, res);
+});
+
+/**
+ * @desc        Logout a user
+ * @route       POST /api/v1/auth/logout
+ * @access      Private
+ */
+export const logout = asyncHandler(async (req, res, next) => {
+  res.clearCookie('token');
+  res.status(200).json({
+    success: true,
+    data: req.user,
+  });
 });
 
 /**
@@ -141,7 +153,10 @@ export const forgotPassword = asyncHandler(async (req, res, next) => {
  */
 export const resetPassword = asyncHandler(async (req, res, next) => {
   // get hashed user
-  const resetPasswordToken = crypto.createHash('sha256').update(req.params.resetToken).digest('hex');
+  const resetPasswordToken = crypto
+    .createHash('sha256')
+    .update(req.params.resetToken)
+    .digest('hex');
 
   const user = await User.findOne({
     resetPasswordToken,
