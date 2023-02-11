@@ -14,11 +14,13 @@ import { protect, authorize } from '../middlewares/auth.js';
 
 // include other resource routers
 import courseRouter from './courses.js';
+import reviewRouter from './reviews.js';
 
 const router = Router();
 
 // re-route into other resource routers
 router.use('/:bootcampId/courses', courseRouter);
+router.use('/:bootcampId/reviews', reviewRouter);
 
 router
   .route('/')
