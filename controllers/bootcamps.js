@@ -38,7 +38,7 @@ export const getBootcamp = asyncHandler(async (req, res, next) => {
  */
 export const createBootcamp = asyncHandler(async (req, res, next) => {
   // add user who creates bootcamp to req body
-  req.body.user = req.user._id;
+  req.body.user = req.user.id;
 
   // check for published bootcamp
   const published = await Bootcamp.findOne({ user: req.user._id });
@@ -72,7 +72,7 @@ export const updateBootcamp = asyncHandler(async (req, res, next) => {
   }
 
   // making sure user is the owner of bootcamp
-  if (bootcamp.user.toString() !== req.user._id && req.user.role !== 'admin') {
+  if (bootcamp.user.toString() !== req.user.id && req.user.role !== 'admin') {
     return next(
       new ErrorResponse('You are not authorized to update this bootcamp', 400),
     );
@@ -102,7 +102,7 @@ export const deleteBootcamp = asyncHandler(async (req, res, next) => {
   }
 
   // making sure user is the owner of bootcamp
-  if (bootcamp.user.toString() !== req.user._id && req.user.role !== 'admin') {
+  if (bootcamp.user.toString() !== req.user.id && req.user.role !== 'admin') {
     return next(
       new ErrorResponse('You are not authorized to delete this bootcamp', 400),
     );
@@ -155,7 +155,7 @@ export const bootcampPhotoUpload = asyncHandler(async (req, res, next) => {
   }
 
   // making sure user is the owner of bootcamp
-  if (bootcamp.user.toString() !== req.user._id && req.user.role !== 'admin') {
+  if (bootcamp.user.toString() !== req.user.id && req.user.role !== 'admin') {
     return next(
       new ErrorResponse('You are not authorized to update this bootcamp', 400),
     );
